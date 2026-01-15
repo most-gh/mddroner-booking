@@ -336,8 +336,8 @@ export default function Home() {
                     htmlFor="multipleVehicles"
                     className="flex-1 cursor-pointer font-medium"
                   >
-                    <span>我有多於一台車參與</span>
-                    <span className="text-accent ml-2">+$800/台</span>
+                    <span>我有多於一架車參與</span>
+                    <span className="text-accent ml-2">+$800/架</span>
                   </Label>
                 </div>
 
@@ -397,10 +397,10 @@ export default function Home() {
                     <p className="font-semibold">{formData.date}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">預計費用</p>
+                    <p className="text-sm text-muted-foreground mb-1">揀選計劃</p>
                     <p className="font-semibold text-accent">
                       基礎套餐
-                      {formData.multipleVehicles && " + 多台車"}
+                      {formData.multipleVehicles && " + 多架車"}
                       {formData.videoUpgrade && " + 動態影片"}
                     </p>
                   </div>
