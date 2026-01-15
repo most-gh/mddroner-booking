@@ -20,7 +20,7 @@ type FormStep = 1 | 2 | 3 | 4;
 
 const LOCATIONS: Record<LocationType, { name: string; image: string }> = {
   luk_keng: { name: "鹿頸", image: "/images/鹿頸.jpg" },
-  tai_tam: { name: "大潭水壩", image: "/images/AwiRKuumrc46.jpg" },
+  tai_tam: { name: "大潭水壩", image: "/images/大潭水壩.jpg" },
   shek_o: { name: "石澳", image: "/images/石澳.jpg" },
   ting_kau: { name: "汀九", image: "/images/汀九.jpg" },
   clear_water: { name: "清水灣", image: "/images/清水灣.jpg" },
@@ -32,14 +32,14 @@ const LOCATIONS: Record<LocationType, { name: string; image: string }> = {
   kc_container: { name: "葵涌貨櫃碼頭", image: "/images/葵涌貨櫃碼頭.jpg" },
   tso_wo_hang: { name: "早禾坑碼頭", image: "/images/早禾坑碼頭.jpg" },
   tai_po_road: { name: "大埔道", image: "/images/大埔道.jpg" },
-  tai_ping_shan: { name: "太平山街", image: "/images/I8tjhfN0AxQm.jpg" },
+  tai_ping_shan: { name: "太平山街", image: "/images/太平山街.jpg" },
   hill_road: { name: "山道", image: "/images/山道.jpg" },
-  tai_koo_bridge: { name: "太古天橋", image: "/images/AwiRKuumrc46.jpg" },
-  kai_tak: { name: "啟德體育園", image: "/images/I8tjhfN0AxQm.jpg" },
+  tai_koo_bridge: { name: "太古天橋", image: "/images/太古天橋.jpg" },
+  kai_tak: { name: "啟德體育園", image: "/images/啟德體育園.jpg" },
   science_park: { name: "科學園", image: "/images/科學園.jpg" },
-  university_hills: { name: "University Hills", image: "/images/university_hills.webp" },
+  university_hills: { name: "University Hills", image: "/images/university_hills.jpg" },
   chai_wan: { name: "柴灣道天橋", image: "/images/柴灣道天橋.jpg" },
-  tai_mei_duk: { name: "大美篤", image: "/images/AwiRKuumrc46.jpg" },
+  tai_mei_duk: { name: "大美篤", image: "/images/大美篤.jpg" },
 };
 
 const LOCATION_KEYS = Object.keys(LOCATIONS) as LocationType[];
