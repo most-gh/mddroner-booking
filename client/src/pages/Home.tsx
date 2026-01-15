@@ -11,8 +11,8 @@ import { trpc } from "@/lib/trpc";
 
 type LocationType = 
   | "luk_keng" | "tai_tam" | "shek_o" | "ting_kau" | "clear_water" 
-  | "sam_mun" | "hoi_on" | "tsing_ma" | "tko_bridge" | "central_wheel"
-  | "tai_mo_shan" | "lantau_link" | "kc_container" | "tso_wo_hang" | "ma_kwu_lam"
+  | "sam_mun" | "tko_bridge" | "central_wheel"
+  | "tai_mo_shan" | "lantau_link" | "kc_container" | "tso_wo_hang"
   | "tai_po_road" | "tai_ping_shan" | "hill_road" | "tai_koo_bridge" | "kai_tak"
   | "science_park" | "university_hills" | "chai_wan" | "tai_mei_duk";
 
@@ -25,15 +25,12 @@ const LOCATIONS: Record<LocationType, { name: string; image: string }> = {
   ting_kau: { name: "汀九", image: "/images/汀九.jpg" },
   clear_water: { name: "清水灣", image: "/images/清水灣.jpg" },
   sam_mun: { name: "三門仔", image: "/images/三門仔.jpg" },
-  hoi_on: { name: "昂船洲", image: "/images/I8tjhfN0AxQm.jpg" },
-  tsing_ma: { name: "青馬橋", image: "/images/I8tjhfN0AxQm.jpg" },
   tko_bridge: { name: "將軍澳跨灣大橋", image: "/images/將軍澳.jpg" },
   central_wheel: { name: "中環摩天輪", image: "/images/中環摩天輪.jpg" },
   tai_mo_shan: { name: "大帽山", image: "/images/大帽山.jpg" },
   lantau_link: { name: "大嶼山觀景台", image: "/images/大嶼山觀景台.jpg" },
   kc_container: { name: "葵涌貨櫃碼頭", image: "/images/葵涌貨櫃碼頭.jpg" },
   tso_wo_hang: { name: "早禾坑碼頭", image: "/images/早禾坑碼頭.jpg" },
-  ma_kwu_lam: { name: "馬鞍山", image: "/images/YGeLV2wfkxVO.jpg" },
   tai_po_road: { name: "大埔道", image: "/images/大埔道.jpg" },
   tai_ping_shan: { name: "太平山街", image: "/images/I8tjhfN0AxQm.jpg" },
   hill_road: { name: "山道", image: "/images/山道.jpg" },
