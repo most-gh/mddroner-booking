@@ -18,6 +18,16 @@ function Router() {
   );
 }
 
+function Header() {
+  return (
+    <header className="bg-background border-b border-border">
+      <div className="container py-4 flex items-center">
+        <img src="/mddroner-logo.png" alt="MDDroner" className="h-10" />
+      </div>
+    </header>
+  );
+}
+
 // NOTE: About Theme
 // - First choose a default theme according to your design style (dark or light bg), than change color palette in index.css
 //   to keep consistent foreground/background color across components
@@ -30,6 +40,7 @@ function App() {
         defaultTheme="light"
       >
         <TooltipProvider>
+          <Header />
           <Toaster />
           <Router />
         </TooltipProvider>

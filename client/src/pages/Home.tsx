@@ -9,32 +9,48 @@ import { useState, useRef } from "react";
 import { toast } from "sonner";
 import { trpc } from "@/lib/trpc";
 
-type RouteType = "classic" | "industrial" | "coastal";
+type LocationType = 
+  | "luk_keng" | "tai_tam" | "shek_o" | "ting_kau" | "clear_water" 
+  | "sam_mun" | "hoi_on" | "tsing_ma" | "tko_bridge" | "central_wheel"
+  | "tai_mo_shan" | "lantau_link" | "kc_container" | "tso_wo_hang" | "ma_kwu_lam"
+  | "tai_po_road" | "tai_ping_shan" | "hill_road" | "tai_koo_bridge" | "kai_tak"
+  | "science_park" | "university_hills" | "chai_wan";
+
 type FormStep = 1 | 2 | 3 | 4;
 
-const ROUTES = {
-  classic: {
-    name: "經典山道",
-    description: "大帽山 / 飛鵝山 / 汀九",
-    image: "/images/AwiRKuumrc46.jpg",
-  },
-  industrial: {
-    name: "工業美學",
-    description: "大潭 / 昂船洲 / 欣澳",
-    image: "/images/I8tjhfN0AxQm.jpg",
-  },
-  coastal: {
-    name: "海岸秘境",
-    description: "東壩 / 布袋澳 / 清水灣",
-    image: "/images/YGeLV2wfkxVO.jpg",
-  },
+const LOCATIONS: Record<LocationType, { name: string; image: string }> = {
+  luk_keng: { name: "鹿頸", image: "/images/AwiRKuumrc46.jpg" },
+  tai_tam: { name: "大潭水塘", image: "/images/I8tjhfN0AxQm.jpg" },
+  shek_o: { name: "石澳", image: "/images/YGeLV2wfkxVO.jpg" },
+  ting_kau: { name: "汀九", image: "/images/AwiRKuumrc46.jpg" },
+  clear_water: { name: "清水灣", image: "/images/I8tjhfN0AxQm.jpg" },
+  sam_mun: { name: "三門仔", image: "/images/YGeLV2wfkxVO.jpg" },
+  hoi_on: { name: "昂船洲", image: "/images/AwiRKuumrc46.jpg" },
+  tsing_ma: { name: "青馬橋", image: "/images/I8tjhfN0AxQm.jpg" },
+  tko_bridge: { name: "東九龍跨灣大橋", image: "/images/YGeLV2wfkxVO.jpg" },
+  central_wheel: { name: "中環摩天輪", image: "/images/AwiRKuumrc46.jpg" },
+  tai_mo_shan: { name: "大帽山", image: "/images/I8tjhfN0AxQm.jpg" },
+  lantau_link: { name: "大嶼山觀景台", image: "/images/YGeLV2wfkxVO.jpg" },
+  kc_container: { name: "KC 貨櫃碼頭", image: "/images/AwiRKuumrc46.jpg" },
+  tso_wo_hang: { name: "佐和坑碼頭", image: "/images/I8tjhfN0AxQm.jpg" },
+  ma_kwu_lam: { name: "馬鞍山", image: "/images/YGeLV2wfkxVO.jpg" },
+  tai_po_road: { name: "大埤路", image: "/images/AwiRKuumrc46.jpg" },
+  tai_ping_shan: { name: "太平山街", image: "/images/I8tjhfN0AxQm.jpg" },
+  hill_road: { name: "山道", image: "/images/YGeLV2wfkxVO.jpg" },
+  tai_koo_bridge: { name: "太古橋", image: "/images/AwiRKuumrc46.jpg" },
+  kai_tak: { name: "啟德地標", image: "/images/I8tjhfN0AxQm.jpg" },
+  science_park: { name: "科學園", image: "/images/YGeLV2wfkxVO.jpg" },
+  university_hills: { name: "大學山", image: "/images/AwiRKuumrc46.jpg" },
+  chai_wan: { name: "柴灣道橋", image: "/images/I8tjhfN0AxQm.jpg" },
 };
+
+const LOCATION_KEYS = Object.keys(LOCATIONS) as LocationType[];
 
 export default function Home() {
   let { user, loading, error, isAuthenticated, logout } = useAuth();
 
   const [currentStep, setCurrentStep] = useState<FormStep>(1);
-  const [selectedRoute, setSelectedRoute] = useState<RouteType | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<LocationType | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -47,8 +63,8 @@ export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
   const submitBooking = trpc.booking.submit.useMutation();
 
-  const handleRouteSelect = (route: RouteType) => {
-    setSelectedRoute(route);
+  const handleLocationSelect = (location: LocationType) => {
+    setSelectedLocation(location);
     setCurrentStep(2);
   };
 
@@ -67,14 +83,14 @@ export default function Home() {
   };
 
   const handleSubmit = async () => {
-    if (!formData.name || !formData.phone || !formData.carModel || !formData.date || !selectedRoute) {
+    if (!formData.name || !formData.phone || !formData.carModel || !formData.date || !selectedLocation) {
       toast.error("請填寫所有必填欄位");
       return;
     }
 
     try {
       await submitBooking.mutateAsync({
-        route: ROUTES[selectedRoute].name,
+        route: LOCATIONS[selectedLocation].name,
         name: formData.name,
         phone: formData.phone,
         carModel: formData.carModel,
@@ -86,7 +102,7 @@ export default function Home() {
 
       toast.success("報名成功！我們會於 24 小時內透過 WhatsApp 聯絡你確認詳細時間與天氣安排。");
       setCurrentStep(1);
-      setSelectedRoute(null);
+      setSelectedLocation(null);
       setFormData({
         name: "",
         phone: "",
@@ -128,7 +144,7 @@ export default function Home() {
             預約你的天際視角
           </h1>
           <p className="text-xl md:text-2xl text-white/90 mb-8 font-light">
-            3 個經典地點，1 個專屬套餐
+            23 個經典地點，1 個專屬套餐
           </p>
           <Button
             onClick={scrollToForm}
@@ -141,50 +157,42 @@ export default function Home() {
       </section>
 
       <section id="booking-form" className="py-16 md:py-24 bg-background">
-        <div className="container max-w-4xl">
+        <div className="container max-w-6xl">
           {currentStep >= 1 && (
             <div className="mb-16">
               <div className="flex items-center gap-3 mb-8">
                 <span className="step-counter">01</span>
-                <h2 className="text-3xl font-bold">選擇你的路線</h2>
+                <h2 className="text-3xl font-bold">選擇你的地點</h2>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {(Object.entries(ROUTES) as [RouteType, typeof ROUTES.classic][]).map(
-                  ([key, route]) => (
-                    <button
-                      key={key}
-                      onClick={() => handleRouteSelect(key)}
-                      className={`card-minimal overflow-hidden group cursor-pointer transition-all duration-300 ${
-                        selectedRoute === key
-                          ? "ring-2 ring-accent"
-                          : "hover:ring-2 hover:ring-accent/50"
-                      }`}
-                    >
-                      <div className="relative h-48 overflow-hidden">
-                        <img
-                          src={route.image}
-                          alt={route.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors" />
-                      </div>
-                      <div className="p-4">
-                        <h3 className="text-lg font-bold mb-2">{route.name}</h3>
-                        <p className="text-sm text-muted-foreground flex items-center gap-2">
-                          <MapPin className="w-4 h-4" />
-                          {route.description}
-                        </p>
-                      </div>
-                    </button>
-                  )
-                )}
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                {LOCATION_KEYS.map((key) => (
+                  <button
+                    key={key}
+                    onClick={() => handleLocationSelect(key)}
+                    className={`card-minimal overflow-hidden group cursor-pointer transition-all duration-300 p-3 rounded-lg border-2 ${
+                      selectedLocation === key
+                        ? "ring-2 ring-accent border-accent"
+                        : "border-border hover:border-accent/50"
+                    }`}
+                  >
+                    <div className="relative h-24 overflow-hidden mb-2 rounded">
+                      <img
+                        src={LOCATIONS[key].image}
+                        alt={LOCATIONS[key].name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors" />
+                    </div>
+                    <p className="text-sm font-semibold text-center">{LOCATIONS[key].name}</p>
+                  </button>
+                ))}
               </div>
 
-              {selectedRoute && (
+              {selectedLocation && (
                 <div className="mt-6 p-4 bg-secondary rounded-lg">
                   <p className="text-sm text-muted-foreground">
-                    已選擇：<span className="font-semibold">{ROUTES[selectedRoute].name}</span>
+                    已選擇：<span className="font-semibold">{LOCATIONS[selectedLocation].name}</span>
                   </p>
                 </div>
               )}
@@ -193,14 +201,14 @@ export default function Home() {
 
           <div className="divider-line my-12" />
 
-          {currentStep >= 2 && selectedRoute && (
+          {currentStep >= 2 && selectedLocation && (
             <div className="mb-16">
               <div className="flex items-center gap-3 mb-8">
                 <span className="step-counter">02</span>
                 <h2 className="text-3xl font-bold">填寫基本資料</h2>
               </div>
 
-              <div className="space-y-6">
+              <div className="space-y-6 max-w-2xl">
                 <div>
                   <Label htmlFor="name" className="text-base font-semibold mb-2 block">
                     姓名 *
@@ -269,7 +277,7 @@ export default function Home() {
 
               <Button
                 onClick={() => setCurrentStep(3)}
-                className="mt-8 bg-accent hover:bg-accent/90 text-white w-full"
+                className="mt-8 bg-accent hover:bg-accent/90 text-white w-full max-w-2xl"
               >
                 下一步
               </Button>
@@ -278,14 +286,14 @@ export default function Home() {
 
           <div className="divider-line my-12" />
 
-          {currentStep >= 3 && selectedRoute && (
+          {currentStep >= 3 && selectedLocation && (
             <div className="mb-16">
               <div className="flex items-center gap-3 mb-8">
                 <span className="step-counter">03</span>
                 <h2 className="text-3xl font-bold">附加選項</h2>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-4 max-w-2xl">
                 <div className="flex items-center space-x-3 p-4 border border-border rounded-lg hover:bg-secondary transition-colors">
                   <Checkbox
                     id="multipleVehicles"
@@ -320,7 +328,7 @@ export default function Home() {
 
               <Button
                 onClick={() => setCurrentStep(4)}
-                className="mt-8 bg-accent hover:bg-accent/90 text-white w-full"
+                className="mt-8 bg-accent hover:bg-accent/90 text-white w-full max-w-2xl"
               >
                 檢查並提交
               </Button>
@@ -329,18 +337,18 @@ export default function Home() {
 
           <div className="divider-line my-12" />
 
-          {currentStep >= 4 && selectedRoute && (
+          {currentStep >= 4 && selectedLocation && (
             <div className="mb-16">
               <div className="flex items-center gap-3 mb-8">
                 <span className="step-counter">04</span>
                 <h2 className="text-3xl font-bold">確認預約</h2>
               </div>
 
-              <Card className="p-6 bg-secondary border-border mb-6">
+              <Card className="p-6 bg-secondary border-border mb-6 max-w-2xl">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <p className="text-sm text-muted-foreground mb-1">選擇路線</p>
-                    <p className="font-semibold">{ROUTES[selectedRoute].name}</p>
+                    <p className="text-sm text-muted-foreground mb-1">選擇地點</p>
+                    <p className="font-semibold">{LOCATIONS[selectedLocation].name}</p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground mb-1">姓名</p>
@@ -369,7 +377,7 @@ export default function Home() {
                 </div>
               </Card>
 
-              <div className="bg-secondary p-6 rounded-lg mb-6 border border-border">
+              <div className="bg-secondary p-6 rounded-lg mb-6 border border-border max-w-2xl">
                 <h3 className="font-semibold mb-3 flex items-center gap-2">
                   <span>✓</span> 天氣保障
                 </h3>
@@ -378,7 +386,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="flex gap-4">
+              <div className="flex gap-4 max-w-2xl">
                 <Button
                   onClick={() => setCurrentStep(3)}
                   variant="outline"
@@ -436,7 +444,7 @@ export default function Home() {
           </div>
 
           <div className="mt-12 text-center">
-            <p className="text-muted-foreground mb-4">查看更多同路線作品</p>
+            <p className="text-muted-foreground mb-4">查看更多同地點作品</p>
             <a href="https://www.mddronerphotography.com" target="_blank" rel="noopener noreferrer">
               <Button variant="outline" className="border-accent text-accent hover:bg-accent/10">
                 瀏覽作品集
@@ -446,10 +454,16 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="py-8 bg-background border-t border-border">
-        <div className="container text-center text-sm text-muted-foreground">
-          <p>&copy; 2025 MDDroner Photography. 版權所有。</p>
-          <p className="mt-2">聯絡我們：hello@mddroner.com | +852 9876 5432</p>
+      <footer className="py-12 bg-background border-t border-border">
+        <div className="container max-w-4xl">
+          <div className="flex flex-col items-center justify-center mb-8">
+            <img src="/mddroner-logo.png" alt="MDDroner" className="h-12 mb-4" />
+            <p className="text-sm text-muted-foreground text-center">&copy; 2025 MDDroner Photography. 版權所有。</p>
+          </div>
+          <div className="text-center text-sm text-muted-foreground">
+            <p>聯絡我們：hello@mddroner.com | +852 9876 5432</p>
+            <p className="mt-2"><a href="https://www.mddronerphotography.com" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">訪問我們的網站</a></p>
+          </div>
         </div>
       </footer>
     </div>

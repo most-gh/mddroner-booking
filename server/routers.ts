@@ -48,16 +48,15 @@ export const appRouter = router({
 
           const emailContent = `新的預約申請
 
-路線: ${input.route}
-姓名: ${input.name}
-聯絡電話: ${input.phone}
-車型: ${input.carModel}
-車牌: ${input.carPlate || "未提供"}
-預期拍攝日期: ${input.bookingDate}
-多台車: ${input.multipleVehicles ? "是" : "否"}
-動態影片: ${input.videoUpgrade ? "是" : "否"}
-
-提交時間: ${new Date().toLocaleString("zh-HK")}`;
+• 地點: ${input.route}
+• 姓名: ${input.name}
+• 聯絡電話: ${input.phone}
+• 車型: ${input.carModel}
+• 車牌: ${input.carPlate || "未提供"}
+• 預期拍攝日期: ${input.bookingDate}
+• 多台車: ${input.multipleVehicles ? "是" : "否"}
+• 動態影片: ${input.videoUpgrade ? "是" : "否"}
+• 提交時間: ${new Date().toLocaleString("zh-HK")}`;
 
           await notifyOwner({
             title: "新的 MDDroner 預約申請",
