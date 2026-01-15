@@ -148,7 +148,7 @@ export default function Home() {
             預約你的天際視角
           </h1>
           <p className="text-xl md:text-2xl text-white/90 mb-8 font-light">
-            23 個經典地點，1 個專屬套餐
+            揀選經典地點，留下美好回憶!
           </p>
           <Button
             onClick={scrollToForm}
