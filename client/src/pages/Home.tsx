@@ -490,9 +490,7 @@ export default function Home() {
             <img src="/mddroner-logo.png" alt="MDDroner" className="h-12 mb-4" />
             <p className="text-sm text-muted-foreground text-center">&copy; 2025 MDDroner Photography. 版權所有。</p>
           </div>
-          <div className="text-center text-sm text-muted-foreground">
-            <p className="mt-2"><a href="https://www.mddronerphotography.com" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">訪問我們的網站</a></p>
-          </div>
+
         </div>
       </footer>
     </div>
