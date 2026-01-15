@@ -20,7 +20,7 @@ type FormStep = 1 | 2 | 3 | 4;
 
 const LOCATIONS: Record<LocationType, { name: string; image: string }> = {
   luk_keng: { name: "鹿頸", image: "/images/luk_keng.webp" },
-  tai_tam: { name: "大潭水塘", image: "/images/AwiRKuumrc46.jpg" },
+  tai_tam: { name: "大潭水壩", image: "/images/AwiRKuumrc46.jpg" },
   shek_o: { name: "石澳", image: "/images/shek_o.webp" },
   ting_kau: { name: "汀九", image: "/images/ting_kau.webp" },
   clear_water: { name: "清水灣", image: "/images/YGeLV2wfkxVO.jpg" },
@@ -31,7 +31,7 @@ const LOCATIONS: Record<LocationType, { name: string; image: string }> = {
   central_wheel: { name: "中環摩天輪", image: "/images/AwiRKuumrc46.jpg" },
   tai_mo_shan: { name: "大帽山", image: "/images/I8tjhfN0AxQm.jpg" },
   lantau_link: { name: "大嶼山觀景台", image: "/images/YGeLV2wfkxVO.jpg" },
-  kc_container: { name: "KC 貨櫃碼頭", image: "/images/AwiRKuumrc46.jpg" },
+  kc_container: { name: "葵涂貨檶碼頭", image: "/images/AwiRKuumrc46.jpg" },
   tso_wo_hang: { name: "早禾坑碼頭", image: "/images/I8tjhfN0AxQm.jpg" },
   ma_kwu_lam: { name: "馬鞍山", image: "/images/YGeLV2wfkxVO.jpg" },
   tai_po_road: { name: "大埔道", image: "/images/AwiRKuumrc46.jpg" },
@@ -41,7 +41,7 @@ const LOCATIONS: Record<LocationType, { name: string; image: string }> = {
   kai_tak: { name: "啟德地標", image: "/images/I8tjhfN0AxQm.jpg" },
   science_park: { name: "科學園", image: "/images/YGeLV2wfkxVO.jpg" },
   university_hills: { name: "大學山", image: "/images/university_hills.webp" },
-  chai_wan: { name: "柴灣道橋", image: "/images/chai_wan_bridge.webp" },
+  chai_wan: { name: "柴灣道天橋", image: "/images/chai_wan_bridge.webp" },
   tai_mei_duk: { name: "大美篤", image: "/images/tai_mei_duk.webp" },
 };
 
