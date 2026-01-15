@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ChevronDown, MapPin } from "lucide-react";
+import { ChevronDown, MapPin, X } from "lucide-react";
 import { useState, useRef } from "react";
 import { toast } from "sonner";
 import { trpc } from "@/lib/trpc";
@@ -14,18 +14,18 @@ type LocationType =
   | "sam_mun" | "hoi_on" | "tsing_ma" | "tko_bridge" | "central_wheel"
   | "tai_mo_shan" | "lantau_link" | "kc_container" | "tso_wo_hang" | "ma_kwu_lam"
   | "tai_po_road" | "tai_ping_shan" | "hill_road" | "tai_koo_bridge" | "kai_tak"
-  | "science_park" | "university_hills" | "chai_wan";
+  | "science_park" | "university_hills" | "chai_wan" | "tai_mei_duk";
 
 type FormStep = 1 | 2 | 3 | 4;
 
 const LOCATIONS: Record<LocationType, { name: string; image: string }> = {
-  luk_keng: { name: "鹿頸", image: "/images/AwiRKuumrc46.jpg" },
-  tai_tam: { name: "大潭水塘", image: "/images/I8tjhfN0AxQm.jpg" },
-  shek_o: { name: "石澳", image: "/images/YGeLV2wfkxVO.jpg" },
-  ting_kau: { name: "汀九", image: "/images/AwiRKuumrc46.jpg" },
-  clear_water: { name: "清水灣", image: "/images/I8tjhfN0AxQm.jpg" },
+  luk_keng: { name: "鹿頸", image: "/images/luk_keng.webp" },
+  tai_tam: { name: "大潭水塘", image: "/images/AwiRKuumrc46.jpg" },
+  shek_o: { name: "石澳", image: "/images/shek_o.webp" },
+  ting_kau: { name: "汀九", image: "/images/ting_kau.webp" },
+  clear_water: { name: "清水灣", image: "/images/YGeLV2wfkxVO.jpg" },
   sam_mun: { name: "三門仔", image: "/images/YGeLV2wfkxVO.jpg" },
-  hoi_on: { name: "昂船洲", image: "/images/AwiRKuumrc46.jpg" },
+  hoi_on: { name: "昂船洲", image: "/images/I8tjhfN0AxQm.jpg" },
   tsing_ma: { name: "青馬橋", image: "/images/I8tjhfN0AxQm.jpg" },
   tko_bridge: { name: "東九龍跨灣大橋", image: "/images/YGeLV2wfkxVO.jpg" },
   central_wheel: { name: "中環摩天輪", image: "/images/AwiRKuumrc46.jpg" },
@@ -40,8 +40,9 @@ const LOCATIONS: Record<LocationType, { name: string; image: string }> = {
   tai_koo_bridge: { name: "太古橋", image: "/images/AwiRKuumrc46.jpg" },
   kai_tak: { name: "啟德地標", image: "/images/I8tjhfN0AxQm.jpg" },
   science_park: { name: "科學園", image: "/images/YGeLV2wfkxVO.jpg" },
-  university_hills: { name: "大學山", image: "/images/AwiRKuumrc46.jpg" },
-  chai_wan: { name: "柴灣道橋", image: "/images/I8tjhfN0AxQm.jpg" },
+  university_hills: { name: "大學山", image: "/images/university_hills.webp" },
+  chai_wan: { name: "柴灣道橋", image: "/images/chai_wan_bridge.webp" },
+  tai_mei_duk: { name: "大美篤", image: "/images/tai_mei_duk.webp" },
 };
 
 const LOCATION_KEYS = Object.keys(LOCATIONS) as LocationType[];
@@ -50,7 +51,7 @@ export default function Home() {
   let { user, loading, error, isAuthenticated, logout } = useAuth();
 
   const [currentStep, setCurrentStep] = useState<FormStep>(1);
-  const [selectedLocation, setSelectedLocation] = useState<LocationType | null>(null);
+  const [selectedLocations, setSelectedLocations] = useState<LocationType[]>([]);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -63,9 +64,14 @@ export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
   const submitBooking = trpc.booking.submit.useMutation();
 
-  const handleLocationSelect = (location: LocationType) => {
-    setSelectedLocation(location);
-    setCurrentStep(2);
+  const handleLocationToggle = (location: LocationType) => {
+    if (selectedLocations.includes(location)) {
+      setSelectedLocations(selectedLocations.filter(l => l !== location));
+    } else if (selectedLocations.length < 3) {
+      setSelectedLocations([...selectedLocations, location]);
+    } else {
+      toast.error("最多只能選擇 3 個地點");
+    }
   };
 
   const handleInputChange = (field: string, value: any) => {
@@ -83,14 +89,15 @@ export default function Home() {
   };
 
   const handleSubmit = async () => {
-    if (!formData.name || !formData.phone || !formData.carModel || !formData.date || !selectedLocation) {
-      toast.error("請填寫所有必填欄位");
+    if (!formData.name || !formData.phone || !formData.carModel || !formData.date || selectedLocations.length === 0) {
+      toast.error("請填寫所有必填欄位並選擇地點");
       return;
     }
 
     try {
+      const locationsStr = selectedLocations.map(l => LOCATIONS[l].name).join(", ");
       await submitBooking.mutateAsync({
-        route: LOCATIONS[selectedLocation].name,
+        route: locationsStr,
         name: formData.name,
         phone: formData.phone,
         carModel: formData.carModel,
@@ -102,7 +109,7 @@ export default function Home() {
 
       toast.success("報名成功！我們會於 24 小時內透過 WhatsApp 聯絡你確認詳細時間與天氣安排。");
       setCurrentStep(1);
-      setSelectedLocation(null);
+      setSelectedLocations([]);
       setFormData({
         name: "",
         phone: "",
@@ -162,16 +169,16 @@ export default function Home() {
             <div className="mb-16">
               <div className="flex items-center gap-3 mb-8">
                 <span className="step-counter">01</span>
-                <h2 className="text-3xl font-bold">選擇你的地點</h2>
+                <h2 className="text-3xl font-bold">選擇你的地點 <span className="text-sm text-muted-foreground font-normal">(最多 3 個)</span></h2>
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 {LOCATION_KEYS.map((key) => (
                   <button
                     key={key}
-                    onClick={() => handleLocationSelect(key)}
-                    className={`card-minimal overflow-hidden group cursor-pointer transition-all duration-300 p-3 rounded-lg border-2 ${
-                      selectedLocation === key
+                    onClick={() => handleLocationToggle(key)}
+                    className={`card-minimal overflow-hidden group cursor-pointer transition-all duration-300 p-3 rounded-lg border-2 relative ${
+                      selectedLocations.includes(key)
                         ? "ring-2 ring-accent border-accent"
                         : "border-border hover:border-accent/50"
                     }`}
@@ -185,23 +192,49 @@ export default function Home() {
                       <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors" />
                     </div>
                     <p className="text-sm font-semibold text-center">{LOCATIONS[key].name}</p>
+                    {selectedLocations.includes(key) && (
+                      <div className="absolute top-2 right-2 bg-accent text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+                        ✓
+                      </div>
+                    )}
                   </button>
                 ))}
               </div>
 
-              {selectedLocation && (
+              {selectedLocations.length > 0 && (
                 <div className="mt-6 p-4 bg-secondary rounded-lg">
-                  <p className="text-sm text-muted-foreground">
-                    已選擇：<span className="font-semibold">{LOCATIONS[selectedLocation].name}</span>
+                  <p className="text-sm text-muted-foreground mb-2">
+                    已選擇 {selectedLocations.length} 個地點：
                   </p>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedLocations.map((loc) => (
+                      <div key={loc} className="bg-accent text-white px-3 py-1 rounded-full text-sm flex items-center gap-2">
+                        {LOCATIONS[loc].name}
+                        <button
+                          onClick={() => handleLocationToggle(loc)}
+                          className="hover:opacity-80"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
+
+              <Button
+                onClick={() => setCurrentStep(2)}
+                disabled={selectedLocations.length === 0}
+                className="mt-8 bg-accent hover:bg-accent/90 text-white w-full max-w-2xl disabled:opacity-50"
+              >
+                下一步
+              </Button>
             </div>
           )}
 
           <div className="divider-line my-12" />
 
-          {currentStep >= 2 && selectedLocation && (
+          {currentStep >= 2 && selectedLocations.length > 0 && (
             <div className="mb-16">
               <div className="flex items-center gap-3 mb-8">
                 <span className="step-counter">02</span>
@@ -286,7 +319,7 @@ export default function Home() {
 
           <div className="divider-line my-12" />
 
-          {currentStep >= 3 && selectedLocation && (
+          {currentStep >= 3 && selectedLocations.length > 0 && (
             <div className="mb-16">
               <div className="flex items-center gap-3 mb-8">
                 <span className="step-counter">03</span>
@@ -337,7 +370,7 @@ export default function Home() {
 
           <div className="divider-line my-12" />
 
-          {currentStep >= 4 && selectedLocation && (
+          {currentStep >= 4 && selectedLocations.length > 0 && (
             <div className="mb-16">
               <div className="flex items-center gap-3 mb-8">
                 <span className="step-counter">04</span>
@@ -348,7 +381,7 @@ export default function Home() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <p className="text-sm text-muted-foreground mb-1">選擇地點</p>
-                    <p className="font-semibold">{LOCATIONS[selectedLocation].name}</p>
+                    <p className="font-semibold text-sm">{selectedLocations.map(l => LOCATIONS[l].name).join(", ")}</p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground mb-1">姓名</p>
