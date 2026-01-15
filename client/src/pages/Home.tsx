@@ -19,27 +19,27 @@ type LocationType =
 type FormStep = 1 | 2 | 3 | 4;
 
 const LOCATIONS: Record<LocationType, { name: string; image: string }> = {
-  luk_keng: { name: "鹿頸", image: "/images/鹿頸.jpg" },
-  tai_tam: { name: "大潭水壩", image: "/images/大潭水壩.jpg" },
-  shek_o: { name: "石澳", image: "/images/石澳.jpg" },
-  ting_kau: { name: "汀九", image: "/images/汀九.jpg" },
-  clear_water: { name: "清水灣", image: "/images/清水灣.jpg" },
-  sam_mun: { name: "三門仔", image: "/images/三門仔.jpg" },
-  tko_bridge: { name: "將軍澳跨灣大橋", image: "/images/將軍澳.jpg" },
-  central_wheel: { name: "中環摩天輪", image: "/images/中環摩天輪.jpg" },
-  tai_mo_shan: { name: "大帽山", image: "/images/大帽山.jpg" },
-  lantau_link: { name: "大嶼山觀景台", image: "/images/大嶼山觀景台.jpg" },
-  kc_container: { name: "葵涌貨櫃碼頭", image: "/images/葵涌貨櫃碼頭.jpg" },
-  tso_wo_hang: { name: "早禾坑碼頭", image: "/images/早禾坑碼頭.jpg" },
-  tai_po_road: { name: "大埔道", image: "/images/大埔道.jpg" },
-  tai_ping_shan: { name: "太平山街", image: "/images/太平山街.jpg" },
-  hill_road: { name: "山道", image: "/images/山道.jpg" },
-  tai_koo_bridge: { name: "太古天橋", image: "/images/太古天橋.jpg" },
-  kai_tak: { name: "啟德體育園", image: "/images/啟德體育園.jpg" },
-  science_park: { name: "科學園", image: "/images/科學園.jpg" },
+  luk_keng: { name: "鹿頸", image: "/images/luk_keng.jpg" },
+  tai_tam: { name: "大潭水壩", image: "/images/tai_tam.jpg" },
+  shek_o: { name: "石澳", image: "/images/shek_o.jpg" },
+  ting_kau: { name: "汀九", image: "/images/ting_kau.jpg" },
+  clear_water: { name: "清水灣", image: "/images/clear_water_bay.jpg" },
+  sam_mun: { name: "三門仔", image: "/images/sam_mun_tsai.jpg" },
+  tko_bridge: { name: "將軍澳跨灣大橋", image: "/images/tko.jpg" },
+  central_wheel: { name: "中環摩天輪", image: "/images/central.jpg" },
+  tai_mo_shan: { name: "大帽山", image: "/images/tai_mo_shan.jpg" },
+  lantau_link: { name: "大嶼山觀景台", image: "/images/lantau_link.jpg" },
+  kc_container: { name: "葵涌貨櫃碼頭", image: "/images/kwai_chung_cargo.jpg" },
+  tso_wo_hang: { name: "早禾坑碼頭", image: "/images/tso_wo_hang.jpg" },
+  tai_po_road: { name: "大埔道", image: "/images/tai_po_road.jpg" },
+  tai_ping_shan: { name: "太平山街", image: "/images/tai_ping_shan.jpg" },
+  hill_road: { name: "山道", image: "/images/hill_road.jpg" },
+  tai_koo_bridge: { name: "太古天橋", image: "/images/taikoo.jpg" },
+  kai_tak: { name: "啟德體育園", image: "/images/kai_tak.jpg" },
+  science_park: { name: "科學園", image: "/images/sci_park.jpg" },
   university_hills: { name: "University Hills", image: "/images/university_hills.jpg" },
-  chai_wan: { name: "柴灣道天橋", image: "/images/柴灣道天橋.jpg" },
-  tai_mei_duk: { name: "大美篤", image: "/images/大美篤.jpg" },
+  chai_wan: { name: "柴灣道天橋", image: "/images/chai_wan_road.jpg" },
+  tai_mei_duk: { name: "大美篤", image: "/images/tai_mei_duk.jpg" },
 };
 
 const LOCATION_KEYS = Object.keys(LOCATIONS) as LocationType[];
@@ -491,7 +491,6 @@ export default function Home() {
             <p className="text-sm text-muted-foreground text-center">&copy; 2025 MDDroner Photography. 版權所有。</p>
           </div>
           <div className="text-center text-sm text-muted-foreground">
-            <p>聯絡我們：hello@mddroner.com | +852 9876 5432</p>
             <p className="mt-2"><a href="https://www.mddronerphotography.com" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">訪問我們的網站</a></p>
           </div>
         </div>
