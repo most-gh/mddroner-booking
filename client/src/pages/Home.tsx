@@ -144,7 +144,7 @@ export default function Home() {
         </div>
 
         <div className="relative z-10 text-center max-w-2xl mx-auto px-4">
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight whitespace-nowrap">
             預約你的天際視角
           </h1>
           <p className="text-xl md:text-2xl text-white/90 mb-8 font-light">
