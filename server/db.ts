@@ -118,3 +118,49 @@ export async function getBookings() {
     return [];
   }
 }
+
+export async function getBookingById(id: number) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get booking: database not available");
+    return undefined;
+  }
+
+  try {
+    const result = await db.select().from(bookings).where(eq(bookings.id, id)).limit(1);
+    return result.length > 0 ? result[0] : undefined;
+  } catch (error) {
+    console.error("[Database] Failed to get booking:", error);
+    return undefined;
+  }
+}
+
+export async function updateBooking(id: number, updates: Partial<InsertBooking>): Promise<void> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot update booking: database not available");
+    return;
+  }
+
+  try {
+    await db.update(bookings).set(updates).where(eq(bookings.id, id));
+  } catch (error) {
+    console.error("[Database] Failed to update booking:", error);
+    throw error;
+  }
+}
+
+export async function deleteBooking(id: number): Promise<void> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot delete booking: database not available");
+    return;
+  }
+
+  try {
+    await db.delete(bookings).where(eq(bookings.id, id));
+  } catch (error) {
+    console.error("[Database] Failed to delete booking:", error);
+    throw error;
+  }
+}

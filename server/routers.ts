@@ -1,10 +1,11 @@
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { publicProcedure, router } from "./_core/trpc";
-import { createBooking, getBookings } from "./db";
+import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
+import { createBooking, getBookings, getBookingById, updateBooking, deleteBooking } from "./db";
 import { z } from "zod";
 import { notifyOwner } from "./_core/notification";
+import { TRPCError } from "@trpc/server";
 
 export const appRouter = router({
   system: systemRouter,
@@ -72,6 +73,41 @@ export const appRouter = router({
     list: publicProcedure.query(async () => {
       return await getBookings();
     }),
+    getById: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .query(async ({ input, ctx }) => {
+        if (ctx.user?.role !== "admin") {
+          throw new TRPCError({ code: "FORBIDDEN" });
+        }
+        return await getBookingById(input.id);
+      }),
+    update: protectedProcedure
+      .input(
+        z.object({
+          id: z.number(),
+          status: z.enum(["pending", "confirmed", "completed", "cancelled"]).optional(),
+          notes: z.string().optional(),
+        })
+      )
+      .mutation(async ({ input, ctx }) => {
+        if (ctx.user?.role !== "admin") {
+          throw new TRPCError({ code: "FORBIDDEN" });
+        }
+        await updateBooking(input.id, {
+          status: input.status,
+          notes: input.notes,
+        });
+        return { success: true };
+      }),
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input, ctx }) => {
+        if (ctx.user?.role !== "admin") {
+          throw new TRPCError({ code: "FORBIDDEN" });
+        }
+        await deleteBooking(input.id);
+        return { success: true };
+      }),
   }),
 });
 

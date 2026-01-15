@@ -28,7 +28,7 @@ export type InsertUser = typeof users.$inferInsert;
 // Booking table for car club reservations
 export const bookings = mysqlTable("bookings", {
   id: int("id").autoincrement().primaryKey(),
-  route: varchar("route", { length: 50 }).notNull(),
+  route: varchar("route", { length: 255 }).notNull(),
   name: varchar("name", { length: 255 }).notNull(),
   phone: varchar("phone", { length: 20 }).notNull(),
   carModel: varchar("carModel", { length: 255 }).notNull(),
@@ -36,6 +36,8 @@ export const bookings = mysqlTable("bookings", {
   bookingDate: varchar("bookingDate", { length: 10 }).notNull(),
   multipleVehicles: int("multipleVehicles").default(0).notNull(),
   videoUpgrade: int("videoUpgrade").default(0).notNull(),
+  status: mysqlEnum("status", ["pending", "confirmed", "completed", "cancelled"]).default("pending").notNull(),
+  notes: text("notes"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

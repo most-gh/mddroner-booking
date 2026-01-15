@@ -15,6 +15,13 @@
       "when": 1768484632309,
       "tag": "0001_first_triton",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1768488040270,
+      "tag": "0002_purple_spot",
+      "breakpoints": true
     }
   ]
 }
