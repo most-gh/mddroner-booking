@@ -1,20 +1,13 @@
+import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ChevronDown, MapPin, Calendar, Phone, Car } from "lucide-react";
+import { ChevronDown, MapPin } from "lucide-react";
 import { useState, useRef } from "react";
 import { toast } from "sonner";
-
-/**
- * Design System: Modern Minimalism
- * - Color: White background + Deep gray text + Gold accent (#D4AF37 in OKLCH)
- * - Typography: Playfair Display for headings, Inter for body
- * - Layout: Non-symmetric, floating cards with subtle shadows
- * - Interaction: Smooth transitions, hover effects with elevation
- */
+import { trpc } from "@/lib/trpc";
 
 type RouteType = "classic" | "industrial" | "coastal";
 type FormStep = 1 | 2 | 3 | 4;
@@ -38,6 +31,8 @@ const ROUTES = {
 };
 
 export default function Home() {
+  let { user, loading, error, isAuthenticated, logout } = useAuth();
+
   const [currentStep, setCurrentStep] = useState<FormStep>(1);
   const [selectedRoute, setSelectedRoute] = useState<RouteType | null>(null);
   const [formData, setFormData] = useState({
@@ -50,6 +45,7 @@ export default function Home() {
     videoUpgrade: false,
   });
   const heroRef = useRef<HTMLDivElement>(null);
+  const submitBooking = trpc.booking.submit.useMutation();
 
   const handleRouteSelect = (route: RouteType) => {
     setSelectedRoute(route);
@@ -70,40 +66,40 @@ export default function Home() {
     }));
   };
 
-  const handleSubmit = () => {
-    if (!formData.name || !formData.phone || !formData.carModel || !formData.date) {
+  const handleSubmit = async () => {
+    if (!formData.name || !formData.phone || !formData.carModel || !formData.date || !selectedRoute) {
       toast.error("請填寫所有必填欄位");
       return;
     }
 
-    const message = `
-感謝預約！MDDroner 已收到你的報名。
+    try {
+      await submitBooking.mutateAsync({
+        route: ROUTES[selectedRoute].name,
+        name: formData.name,
+        phone: formData.phone,
+        carModel: formData.carModel,
+        carPlate: formData.carPlate || undefined,
+        bookingDate: formData.date,
+        multipleVehicles: formData.multipleVehicles,
+        videoUpgrade: formData.videoUpgrade,
+      });
 
-路線：${selectedRoute ? ROUTES[selectedRoute].name : ""}
-姓名：${formData.name}
-聯絡電話：${formData.phone}
-車型：${formData.carModel}
-車牌：${formData.carPlate}
-預期日期：${formData.date}
-多台車：${formData.multipleVehicles ? "是" : "否"}
-動態跟拍：${formData.videoUpgrade ? "是" : "否"}
-
-我們會於 24 小時內透過 WhatsApp 聯絡你確認詳細時間與天氣安排。
-    `;
-
-    console.log("Form submitted:", message);
-    toast.success("報名成功！我們會盡快與您聯絡。");
-    setCurrentStep(1);
-    setSelectedRoute(null);
-    setFormData({
-      name: "",
-      phone: "",
-      carModel: "",
-      carPlate: "",
-      date: "",
-      multipleVehicles: false,
-      videoUpgrade: false,
-    });
+      toast.success("報名成功！我們會於 24 小時內透過 WhatsApp 聯絡你確認詳細時間與天氣安排。");
+      setCurrentStep(1);
+      setSelectedRoute(null);
+      setFormData({
+        name: "",
+        phone: "",
+        carModel: "",
+        carPlate: "",
+        date: "",
+        multipleVehicles: false,
+        videoUpgrade: false,
+      });
+    } catch (error) {
+      console.error("Booking submission failed:", error);
+      toast.error("報名失敗，請稍後重試。");
+    }
   };
 
   const scrollToForm = () => {
@@ -113,7 +109,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Hero Section */}
       <section
         ref={heroRef}
         className="relative h-screen flex items-center justify-center overflow-hidden"
@@ -145,10 +140,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Booking Form Section */}
       <section id="booking-form" className="py-16 md:py-24 bg-background">
         <div className="container max-w-4xl">
-          {/* Step 1: Route Selection */}
           {currentStep >= 1 && (
             <div className="mb-16">
               <div className="flex items-center gap-3 mb-8">
@@ -200,7 +193,6 @@ export default function Home() {
 
           <div className="divider-line my-12" />
 
-          {/* Step 2: Basic Information */}
           {currentStep >= 2 && selectedRoute && (
             <div className="mb-16">
               <div className="flex items-center gap-3 mb-8">
@@ -286,7 +278,6 @@ export default function Home() {
 
           <div className="divider-line my-12" />
 
-          {/* Step 3: Add-ons */}
           {currentStep >= 3 && selectedRoute && (
             <div className="mb-16">
               <div className="flex items-center gap-3 mb-8">
@@ -338,7 +329,6 @@ export default function Home() {
 
           <div className="divider-line my-12" />
 
-          {/* Step 4: Review & Submit */}
           {currentStep >= 4 && selectedRoute && (
             <div className="mb-16">
               <div className="flex items-center gap-3 mb-8">
@@ -398,9 +388,10 @@ export default function Home() {
                 </Button>
                 <Button
                   onClick={handleSubmit}
+                  disabled={submitBooking.isPending}
                   className="flex-1 bg-accent hover:bg-accent/90 text-white"
                 >
-                  確認提交
+                  {submitBooking.isPending ? "提交中..." : "確認提交"}
                 </Button>
               </div>
             </div>
@@ -408,7 +399,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Trust Elements Section */}
       <section className="py-16 md:py-24 bg-secondary border-t border-border">
         <div className="container max-w-4xl">
           <h2 className="text-3xl font-bold mb-12 text-center">為什麼選擇 MDDroner</h2>
@@ -447,14 +437,15 @@ export default function Home() {
 
           <div className="mt-12 text-center">
             <p className="text-muted-foreground mb-4">查看更多同路線作品</p>
-            <Button variant="outline" className="border-accent text-accent hover:bg-accent/10">
-              瀏覽作品集
-            </Button>
+            <a href="https://www.mddronerphotography.com" target="_blank" rel="noopener noreferrer">
+              <Button variant="outline" className="border-accent text-accent hover:bg-accent/10">
+                瀏覽作品集
+              </Button>
+            </a>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="py-8 bg-background border-t border-border">
         <div className="container text-center text-sm text-muted-foreground">
           <p>&copy; 2025 MDDroner Photography. 版權所有。</p>
