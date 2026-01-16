@@ -74,7 +74,9 @@ export default function Home() {
     date: "",
     specialRequests: "",
     multipleVehicles: false,
+    extraVehicleCount: "",
     videoUpgrade: false,
+    videoLocationCount: "",
   });
   const heroRef = useRef<HTMLDivElement>(null);
   const submitBooking = trpc.booking.submit.useMutation();
@@ -149,7 +151,9 @@ export default function Home() {
         date: "",
         specialRequests: "",
         multipleVehicles: false,
+        extraVehicleCount: "",
         videoUpgrade: false,
+        videoLocationCount: "",
       });
     } catch (error) {
       console.error("Booking submission failed:", error);
@@ -395,35 +399,72 @@ export default function Home() {
               </div>
 
               <div className="space-y-4 max-w-2xl">
-                <div className="flex items-center space-x-3 p-4 border border-border rounded-lg hover:bg-secondary transition-colors">
-                  <Checkbox
-                    id="multipleVehicles"
-                    checked={formData.multipleVehicles}
-                    onCheckedChange={(checked) =>
-                      handleCheckboxChange("multipleVehicles", checked as boolean)
-                    }
-                  />
-                  <Label
-                    htmlFor="multipleVehicles"
-                    className="flex-1 cursor-pointer font-medium"
-                  >
-                    <span>我有多於一架車參與</span>
-                    <span className="text-accent ml-2">+$800/架</span>
-                  </Label>
+                <div>
+                  <div className="flex items-center space-x-3 p-4 border border-border rounded-lg hover:bg-secondary transition-colors">
+                    <Checkbox
+                      id="multipleVehicles"
+                      checked={formData.multipleVehicles}
+                      onCheckedChange={(checked) =>
+                        handleCheckboxChange("multipleVehicles", checked as boolean)
+                      }
+                    />
+                    <Label
+                      htmlFor="multipleVehicles"
+                      className="flex-1 cursor-pointer font-medium"
+                    >
+                      <span>我有多於一架車參與</span>
+                      <span className="text-accent ml-2">+$800/架</span>
+                    </Label>
+                  </div>
+                  {formData.multipleVehicles && (
+                    <div className="mt-3 pl-4">
+                      <Label htmlFor="extraVehicleCount" className="text-sm font-semibold mb-2 block">
+                        需要拍攝的額外車輛數量
+                      </Label>
+                      <Input
+                        id="extraVehicleCount"
+                        type="number"
+                        min="1"
+                        placeholder="輸入數量 (e.g., 2)"
+                        value={formData.extraVehicleCount}
+                        onChange={(e) => handleInputChange("extraVehicleCount", e.target.value)}
+                        className="border-border"
+                      />
+                    </div>
+                  )}
                 </div>
 
-                <div className="flex items-center space-x-3 p-4 border border-border rounded-lg hover:bg-secondary transition-colors">
-                  <Checkbox
-                    id="videoUpgrade"
-                    checked={formData.videoUpgrade}
-                    onCheckedChange={(checked) =>
-                      handleCheckboxChange("videoUpgrade", checked as boolean)
-                    }
-                  />
-                  <Label htmlFor="videoUpgrade" className="flex-1 cursor-pointer font-medium">
-                    <span>我想加購 15s 動態跟拍影片</span>
-                    <span className="text-accent ml-2">+$500/地點</span>
-                  </Label>
+                <div>
+                  <div className="flex items-center space-x-3 p-4 border border-border rounded-lg hover:bg-secondary transition-colors">
+                    <Checkbox
+                      id="videoUpgrade"
+                      checked={formData.videoUpgrade}
+                      onCheckedChange={(checked) =>
+                        handleCheckboxChange("videoUpgrade", checked as boolean)
+                      }
+                    />
+                    <Label htmlFor="videoUpgrade" className="flex-1 cursor-pointer font-medium">
+                      <span>我想加購 15s 動態跏拍影片</span>
+                      <span className="text-accent ml-2">+$500/地點</span>
+                    </Label>
+                  </div>
+                  {formData.videoUpgrade && (
+                    <div className="mt-3 pl-4">
+                      <Label htmlFor="videoLocationCount" className="text-sm font-semibold mb-2 block">
+                        需要拍攝動態影片的地點數量
+                      </Label>
+                      <Input
+                        id="videoLocationCount"
+                        type="number"
+                        min="1"
+                        max={selectedLocations.length}
+                        placeholder={`輸入數量 (1-${selectedLocations.length})`}
+                        value={formData.videoLocationCount}
+                        onChange={(e) => handleInputChange("videoLocationCount", e.target.value)}
+                        className="border-border"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
 
