@@ -111,12 +111,21 @@ export default function Home() {
     const VIDEO_UPGRADE_PRICE = 500;
 
     let total = BASE_PRICE;
-    if (formData.multipleVehicles) {
-      total += MULTIPLE_VEHICLES_PRICE;
+    
+    if (formData.multipleVehicles && formData.extraVehicleCount) {
+      const extraCount = parseInt(formData.extraVehicleCount, 10);
+      if (!isNaN(extraCount) && extraCount > 0) {
+        total += MULTIPLE_VEHICLES_PRICE * extraCount;
+      }
     }
-    if (formData.videoUpgrade) {
-      total += VIDEO_UPGRADE_PRICE * selectedLocations.length;
+    
+    if (formData.videoUpgrade && formData.videoLocationCount) {
+      const videoCount = parseInt(formData.videoLocationCount, 10);
+      if (!isNaN(videoCount) && videoCount > 0) {
+        total += VIDEO_UPGRADE_PRICE * videoCount;
+      }
     }
+    
     return total;
   };
 
@@ -532,16 +541,16 @@ export default function Home() {
                     <span>基礎套餐</span>
                     <span>$2,800</span>
                   </div>
-                  {formData.multipleVehicles && (
+                  {formData.multipleVehicles && formData.extraVehicleCount && (
                     <div className="flex justify-between text-sm">
-                      <span>多架車加價</span>
-                      <span>+$800</span>
+                      <span>多架車加價 ({formData.extraVehicleCount} 架)</span>
+                      <span>+${800 * parseInt(formData.extraVehicleCount, 10)}</span>
                     </div>
                   )}
-                  {formData.videoUpgrade && (
+                  {formData.videoUpgrade && formData.videoLocationCount && (
                     <div className="flex justify-between text-sm">
-                      <span>動態影片加價 ({selectedLocations.length} 個地點)</span>
-                      <span>+${500 * selectedLocations.length}</span>
+                      <span>動態影片加價 ({formData.videoLocationCount} 個地點)</span>
+                      <span>+${500 * parseInt(formData.videoLocationCount, 10)}</span>
                     </div>
                   )}
                   <div className="border-t border-accent/30 pt-3 flex justify-between font-bold text-lg">
