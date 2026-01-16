@@ -520,7 +520,7 @@ export default function Home() {
                   <div>
                     <p className="text-sm text-muted-foreground mb-1">揀選計劃</p>
                     <p className="font-semibold text-accent">
-                      基礎套餐
+                      基本套餐
                       {formData.multipleVehicles && " + 多架車"}
                       {formData.videoUpgrade && " + 動態影片"}
                     </p>
@@ -538,7 +538,7 @@ export default function Home() {
                 <h3 className="font-semibold mb-4 text-lg">預估費用</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between text-sm">
-                    <span>基礎套餐 (只劅1架車)</span>
+                    <span>基本套餐 (只包1架車)</span>
                     <span>$2,800</span>
                   </div>
                   {formData.multipleVehicles && formData.extraVehicleCount && (
@@ -559,6 +559,54 @@ export default function Home() {
                   </div>
                 </div>
                 <p className="text-xs text-muted-foreground mt-4">*最終費用以確認電郵為準</p>
+              </div>
+
+              <div className="bg-secondary p-6 rounded-lg mb-6 border border-border max-w-2xl">
+                <h3 className="font-semibold mb-4 text-lg">基本套餐詳情</h3>
+                <div className="space-y-3 text-sm">
+                  <div className="flex items-start gap-3">
+                    <span className="text-accent font-bold">•</span>
+                    <div>
+                      <p className="font-semibold">靜態航拍照片</p>
+                      <p className="text-muted-foreground">15-25 張精修高解析度照片（包含多角度、多高度拍攝）</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="text-accent font-bold">•</span>
+                    <div>
+                      <p className="font-semibold">動態影片</p>
+                      <p className="text-muted-foreground">可選加購 15-30 秒 4K 動態跟拍影片</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="text-accent font-bold">•</span>
+                    <div>
+                      <p className="font-semibold">拍攝時長</p>
+                      <p className="text-muted-foreground">60-90 分鐘現場拍攝</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="text-accent font-bold">•</span>
+                    <div>
+                      <p className="font-semibold">交付時間</p>
+                      <p className="text-muted-foreground">7-10 個工作天內交付</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="text-accent font-bold">•</span>
+                    <div>
+                      <p className="font-semibold">包含地點</p>
+                      <p className="text-muted-foreground">最多 3 個地點（可自訂或選擇提議路線）</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="text-accent font-bold">•</span>
+                    <div>
+                      <p className="font-semibold">天氣保障</p>
+                      <p className="text-muted-foreground">拍攝前 2 小時遇降雨或強風可免費改期</p>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div className="bg-secondary p-6 rounded-lg mb-6 border border-border max-w-2xl">
