@@ -538,12 +538,12 @@ export default function Home() {
                 <h3 className="font-semibold mb-4 text-lg">預估費用</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between text-sm">
-                    <span>基礎套餐</span>
+                    <span>基礎套餐 (只劅1架車)</span>
                     <span>$2,800</span>
                   </div>
                   {formData.multipleVehicles && formData.extraVehicleCount && (
                     <div className="flex justify-between text-sm">
-                      <span>多架車加價 ({formData.extraVehicleCount} 架)</span>
+                      <span>多架車加價 ({formData.extraVehicleCount} 架, 總計 {1 + parseInt(formData.extraVehicleCount, 10)} 架車)</span>
                       <span>+${800 * parseInt(formData.extraVehicleCount, 10)}</span>
                     </div>
                   )}
