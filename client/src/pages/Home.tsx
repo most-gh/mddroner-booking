@@ -14,7 +14,7 @@ type LocationType =
   | "sam_mun" | "tko_bridge" | "central_wheel"
   | "tai_mo_shan" | "lantau_link" | "kc_container" | "tso_wo_hang"
   | "tai_po_road" | "tai_ping_shan" | "hill_road" | "tai_koo_bridge" | "kai_tak"
-  | "science_park" | "university_hills" | "chai_wan" | "tai_mei_duk";
+  | "science_park" | "chai_wan" | "tai_mei_duk" | "ha_cheng_men";
 
 type FormStep = 1 | 2 | 3 | 4;
 
@@ -37,8 +37,8 @@ const LOCATIONS: Record<LocationType, { name: string; image: string }> = {
   tai_koo_bridge: { name: "太古天橋", image: "/images/taikoo.jpg" },
   kai_tak: { name: "啟德體育園", image: "/images/kai_tak.jpg" },
   science_park: { name: "科學園", image: "/images/sci_park.jpg" },
-  university_hills: { name: "University Hills", image: "/images/university_hills.jpg" },
   chai_wan: { name: "柴灣道天橋", image: "/images/chai_wan_road.jpg" },
+  ha_cheng_men: { name: "下城門水塘", image: "/images/ha_cheng_men_reservoir.jpg" },
   tai_mei_duk: { name: "大美篤", image: "/images/tai_mei_duk.jpg" },
 };
 
@@ -48,15 +48,15 @@ type ProposedRouteType = "route1" | "route2" | "route3";
 
 const PROPOSED_ROUTES: Record<ProposedRouteType, { name: string; locations: LocationType[] }> = {
   route1: {
-    name: "三門仔+鹿頸+科學園",
+    name: "提議路線1",
     locations: ["sam_mun", "luk_keng", "science_park"],
   },
   route2: {
-    name: "柴灣道天橋+石澳+大潭水壩",
+    name: "提議路線2",
     locations: ["chai_wan", "shek_o", "tai_tam"],
   },
   route3: {
-    name: "汀九+大帽山+葵涌貨櫃碼頭",
+    name: "提議路線3",
     locations: ["ting_kau", "tai_mo_shan", "kc_container"],
   },
 };
@@ -186,11 +186,11 @@ export default function Home() {
             <div className="mb-16">
               <div className="flex items-center gap-3 mb-8">
                 <span className="step-counter">01</span>
-                <h2 className="text-3xl font-bold">選擇你的地點 <span className="text-sm text-muted-foreground font-normal">(最多 3 個)</span></h2>
+                <h2 className="text-3xl font-bold">選擇你的地點</h2>
               </div>
 
               <div className="mb-8">
-                <p className="text-base font-semibold mb-4">或選擇提議路線：</p>
+                <p className="text-base font-semibold mb-4">選擇提議路線：</p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {Object.entries(PROPOSED_ROUTES).map(([key, route]) => (
                     <button
@@ -210,7 +210,7 @@ export default function Home() {
               </div>
 
               <div className="divider-line my-6" />
-              <p className="text-base font-semibold mb-4">或自訂地點：</p>
+              <p className="text-base font-semibold mb-4">或自訂地點 (最多 3 個)：</p>
 
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 {LOCATION_KEYS.map((key) => (
