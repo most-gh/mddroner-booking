@@ -103,6 +103,21 @@ export default function Home() {
     }));
   };
 
+  const calculateEstimatedCost = () => {
+    const BASE_PRICE = 2800;
+    const MULTIPLE_VEHICLES_PRICE = 800;
+    const VIDEO_UPGRADE_PRICE = 500;
+
+    let total = BASE_PRICE;
+    if (formData.multipleVehicles) {
+      total += MULTIPLE_VEHICLES_PRICE;
+    }
+    if (formData.videoUpgrade) {
+      total += VIDEO_UPGRADE_PRICE * selectedLocations.length;
+    }
+    return total;
+  };
+
   const handleSubmit = async () => {
     if (!formData.name || !formData.phone || !formData.carModel || !formData.date || selectedLocations.length === 0) {
       toast.error("請填寫所有必填欄位並選擇地點");
@@ -468,6 +483,33 @@ export default function Home() {
                   </div>
                 )}
               </Card>
+
+              <div className="bg-accent/10 p-6 rounded-lg mb-6 border-2 border-accent max-w-2xl">
+                <h3 className="font-semibold mb-4 text-lg">預估費用</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between text-sm">
+                    <span>基礎套餐</span>
+                    <span>$2,800</span>
+                  </div>
+                  {formData.multipleVehicles && (
+                    <div className="flex justify-between text-sm">
+                      <span>多架車加價</span>
+                      <span>+$800</span>
+                    </div>
+                  )}
+                  {formData.videoUpgrade && (
+                    <div className="flex justify-between text-sm">
+                      <span>動態影片加價 ({selectedLocations.length} 個地點)</span>
+                      <span>+${500 * selectedLocations.length}</span>
+                    </div>
+                  )}
+                  <div className="border-t border-accent/30 pt-3 flex justify-between font-bold text-lg">
+                    <span>總費用</span>
+                    <span className="text-accent">${calculateEstimatedCost()}</span>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground mt-4">*最終費用以確認電郵為準</p>
+              </div>
 
               <div className="bg-secondary p-6 rounded-lg mb-6 border border-border max-w-2xl">
                 <h3 className="font-semibold mb-3 flex items-center gap-2">
