@@ -38,7 +38,7 @@ const LOCATIONS: Record<LocationType, { name: string; image: string }> = {
   kai_tak: { name: "啟德體育園", image: "/images/kai_tak.jpg" },
   science_park: { name: "科學園", image: "/images/sci_park.jpg" },
   chai_wan: { name: "柴灣道天橋", image: "/images/chai_wan_road.jpg" },
-  ha_cheng_men: { name: "下城門水塘", image: "/images/ha_cheng_men_reservoir.jpg" },
+  ha_cheng_men: { name: "下城門水塘", image: "/images/lower_shing_mun.jpg" },
   tai_mei_duk: { name: "大美篤", image: "/images/tai_mei_duk.jpg" },
 };
 

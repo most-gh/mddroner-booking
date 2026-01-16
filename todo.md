@@ -100,3 +100,7 @@
 - [x] 修復 Vite 配置添加 base 路徑 `/mddroner-booking/`
 - [x] 重新構建項目確保資源路徑正確
 - [ ] 同步至 GitHub
+
+## 網站標題和縮圖更新
+- [x] 將「MDDroner Drone Service Booking」改為「MDDroner Photography服務預約」
+- [x] 使用用戶提供的圖片作為「下城門水塘」縮圖
