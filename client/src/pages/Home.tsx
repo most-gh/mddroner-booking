@@ -55,6 +55,7 @@ export default function Home() {
     carModel: "",
     carPlate: "",
     date: "",
+    specialRequests: "",
     multipleVehicles: false,
     videoUpgrade: false,
   });
@@ -100,6 +101,7 @@ export default function Home() {
         carModel: formData.carModel,
         carPlate: formData.carPlate || undefined,
         bookingDate: formData.date,
+        specialRequests: formData.specialRequests || undefined,
         multipleVehicles: formData.multipleVehicles,
         videoUpgrade: formData.videoUpgrade,
       });
@@ -113,6 +115,7 @@ export default function Home() {
         carModel: "",
         carPlate: "",
         date: "",
+        specialRequests: "",
         multipleVehicles: false,
         videoUpgrade: false,
       });
@@ -303,6 +306,19 @@ export default function Home() {
                     className="border-border"
                   />
                 </div>
+
+                <div>
+                  <Label htmlFor="specialRequests" className="text-base font-semibold mb-2 block">
+                    特別要求
+                  </Label>
+                  <textarea
+                    id="specialRequests"
+                    placeholder="例如：標準拍攝時間、特殊拍攝需求、其他註意事項等"
+                    value={formData.specialRequests}
+                    onChange={(e) => handleInputChange("specialRequests", e.target.value)}
+                    className="border border-border rounded-md p-3 min-h-24 resize-none"
+                  />
+                </div>
               </div>
 
               <Button
@@ -405,6 +421,12 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
+                {formData.specialRequests && (
+                  <div className="mt-6 pt-6 border-t border-border">
+                    <p className="text-sm text-muted-foreground mb-2">特別要求</p>
+                    <p className="font-semibold text-sm whitespace-pre-wrap">{formData.specialRequests}</p>
+                  </div>
+                )}
               </Card>
 
               <div className="bg-secondary p-6 rounded-lg mb-6 border border-border max-w-2xl">

@@ -36,6 +36,7 @@ export const bookings = mysqlTable("bookings", {
   bookingDate: varchar("bookingDate", { length: 10 }).notNull(),
   multipleVehicles: int("multipleVehicles").default(0).notNull(),
   videoUpgrade: int("videoUpgrade").default(0).notNull(),
+  specialRequests: text("specialRequests"),
   status: mysqlEnum("status", ["pending", "confirmed", "completed", "cancelled"]).default("pending").notNull(),
   notes: text("notes"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),

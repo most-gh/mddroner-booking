@@ -30,6 +30,7 @@ export const appRouter = router({
           carModel: z.string(),
           carPlate: z.string().optional(),
           bookingDate: z.string(),
+          specialRequests: z.string().optional(),
           multipleVehicles: z.boolean(),
           videoUpgrade: z.boolean(),
         })
@@ -43,6 +44,7 @@ export const appRouter = router({
             carModel: input.carModel,
             carPlate: input.carPlate || null,
             bookingDate: input.bookingDate,
+            specialRequests: input.specialRequests || null,
             multipleVehicles: input.multipleVehicles ? 1 : 0,
             videoUpgrade: input.videoUpgrade ? 1 : 0,
           });
@@ -51,12 +53,13 @@ export const appRouter = router({
 
 • 地點: ${input.route}
 • 姓名: ${input.name}
-• 聯絡電話: ${input.phone}
+• 联絡電話: ${input.phone}
 • 車型: ${input.carModel}
 • 車牌: ${input.carPlate || "未提供"}
 • 預期拍攝日期: ${input.bookingDate}
 • 多台車: ${input.multipleVehicles ? "是" : "否"}
 • 動態影片: ${input.videoUpgrade ? "是" : "否"}
+${input.specialRequests ? `• 特別要求: ${input.specialRequests}` : ""}
 • 提交時間: ${new Date().toLocaleString("zh-HK")}`;
 
           await notifyOwner({
