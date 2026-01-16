@@ -44,6 +44,23 @@ const LOCATIONS: Record<LocationType, { name: string; image: string }> = {
 
 const LOCATION_KEYS = Object.keys(LOCATIONS) as LocationType[];
 
+type ProposedRouteType = "route1" | "route2" | "route3";
+
+const PROPOSED_ROUTES: Record<ProposedRouteType, { name: string; locations: LocationType[] }> = {
+  route1: {
+    name: "三門仔+鹿頸+科學園",
+    locations: ["sam_mun", "luk_keng", "science_park"],
+  },
+  route2: {
+    name: "柴灣道天橋+石澳+大潭水壩",
+    locations: ["chai_wan", "shek_o", "tai_tam"],
+  },
+  route3: {
+    name: "汀九+大帽山+葵涌貨櫃碼頭",
+    locations: ["ting_kau", "tai_mo_shan", "kc_container"],
+  },
+};
+
 export default function Home() {
   let { user, loading, error, isAuthenticated, logout } = useAuth();
 
@@ -171,6 +188,29 @@ export default function Home() {
                 <span className="step-counter">01</span>
                 <h2 className="text-3xl font-bold">選擇你的地點 <span className="text-sm text-muted-foreground font-normal">(最多 3 個)</span></h2>
               </div>
+
+              <div className="mb-8">
+                <p className="text-base font-semibold mb-4">或選擇提議路線：</p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {Object.entries(PROPOSED_ROUTES).map(([key, route]) => (
+                    <button
+                      key={key}
+                      onClick={() => {
+                        setSelectedLocations(route.locations);
+                      }}
+                      className="p-4 border-2 border-border rounded-lg hover:border-accent hover:bg-accent/5 transition-all duration-300 text-left"
+                    >
+                      <p className="font-semibold text-accent">{route.name}</p>
+                      <p className="text-sm text-muted-foreground mt-2">
+                        {route.locations.map(loc => LOCATIONS[loc].name).join(" + ")}
+                      </p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="divider-line my-6" />
+              <p className="text-base font-semibold mb-4">或自訂地點：</p>
 
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 {LOCATION_KEYS.map((key) => (
