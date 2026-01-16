@@ -104,3 +104,7 @@
 ## 網站標題和縮圖更新
 - [x] 將「MDDroner Drone Service Booking」改為「MDDroner Photography服務預約」
 - [x] 使用用戶提供的圖片作為「下城門水塘」縮圖
+
+## Manus 部署修復
+- [x] 移除 vite.config.ts 中的 base 路徑配置（GitHub Pages 專用）
+- [x] 確保 Manus 部署正常顯示
